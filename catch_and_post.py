@@ -23,15 +23,15 @@ async def go(message: discord.Message, client: discord.Client):
         invites = re.findall(INVITE_PATTERN, message.content)
         for invite_url in invites:
             if invite_url.startswith("discord"):
-                default = "https://" + invite_url
+                default = "https://" + invite_url   # correcting link
                 message.content.replace(invite_url, default)
                 invite_url = default
             try:
                 invite = await client.fetch_invite(url=invite_url)
-            except discord.NotFound:
+            except discord.NotFound:    # invalid invite
                 continue
 
-            while invite.guild.id in publishing:
+            while invite.guild.id in publishing:    # preventing concurrency errors when publishing two invitations in the same post
                 await sleep(1)
             try:
                 publishing.add(invite.guild.id)
@@ -41,8 +41,8 @@ async def go(message: discord.Message, client: discord.Client):
 
 
 async def publish_invite(invite, message):
-    desc = URL_REGEX.sub(r'<a href="\1">\1</a>', str(message.clean_content))
-    desc = markdown.markdown(str(desc))
+    desc = URL_REGEX.sub(r'<a href="\1">\1</a>', str(message.clean_content))    # making clickable links
+    desc = markdown.markdown(str(desc))     # converting discord markdown to html
     desc += GUILD_DATA_TABLE.format(message.guild.name, str(message.author), invite.approximate_member_count)
     async with ClientSession(auth=WORDPRESS_AUTH) as session:
         post = await fetch_post(invite.guild, session)
