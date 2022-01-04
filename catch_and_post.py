@@ -99,7 +99,7 @@ def edit_post(post_data: dict, desc: str):
         'content': desc
     }
     url = POSTS_URL + f"/{post_data['id']}"
-    requests.post(url=url, data=payload)
+    requests.post(url=url, data=payload, auth=WORDPRESS_AUTH)
 
 
 GUILD_DATA_TABLE = '''\n
