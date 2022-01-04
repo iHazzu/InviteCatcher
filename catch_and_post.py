@@ -23,7 +23,7 @@ class GuildIcon:
         self.file = None
 
     async def load(self):
-        self.file = self.guild.icon_url.read()
+        self.file = await self.guild.icon_url.read()
 
 
 async def go(message: discord.Message, client: discord.Client):
