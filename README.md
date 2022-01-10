@@ -22,3 +22,12 @@ Finally, run the [main](main.py) file:
 ```bash
 python main.py
 ```
+
+### Setting it on DreamHost
+To run this bot on DreamHost (the platform used by the client) I deployed the application using SSH and Git and then configured the python environment on the machine. All files referring to the bot are located at the address `/home/hazzu/invit_catcher`.
+![files](readme/files.png)
+To run it I created a bash script `run_bot.sh` where I set the environment variables and call [main](main.py). That way I can run the bot automatically from a Cron Job:
+![cron_job](readme/cron_job.png)
+If you want to add new channel ids to [channel_ids](channel_ids.txt) list, you can edit this file through the file manager, save and later re-run the bot (disable and enable the Cron Job).
+![edit_channel_ids](readme/channel_ids.png)
+![edit_cron_job](readme/cron_job_running.png)
