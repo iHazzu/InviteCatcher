@@ -1,6 +1,6 @@
 import re
 import discord
-from keys import WORDPRESS_AUTH
+from keys import WP_AUTH_HEADER
 import markdown
 import requests
 
@@ -61,7 +61,7 @@ def get_post(guild: discord.Guild):
         'post_type': 'discord-guilds',
         'search': guild.id
     }
-    resp = requests.get(url=POSTS_URL, params=payload, auth=WORDPRESS_AUTH)
+    resp = requests.get(url=POSTS_URL, params=payload, headers=WP_AUTH_HEADER)
     posts = resp.json()
     if posts:
         return posts[0]
@@ -83,12 +83,11 @@ def create_post(invite: discord.Invite, desc: str, icon: GuildIcon):
 
 
 def upload_image(icon: GuildIcon) -> dict:
-    headers = {
-        'Content-Type': f'image/{icon.format}',
-        'Content-Disposition': f'attachment; filename="{icon.filename}.{icon.format}"'
-    }
+    headers = WP_AUTH_HEADER.copy()
+    headers['Content-Type'] = f'image/{icon.format}'
+    headers['Content-Disposition'] = f'attachment; filename="{icon.filename}.{icon.format}"'
     url = WORDPRESS_API_URL + "media"
-    resp = requests.post(url=url, data=icon.file, headers=headers, auth=WORDPRESS_AUTH)
+    resp = requests.post(url=url, data=icon.file, headers=headers)
     return resp.json()
 
 
@@ -99,7 +98,7 @@ def edit_post(post_data: dict, desc: str):
         'content': desc
     }
     url = POSTS_URL + f"/{post_data['id']}"
-    requests.post(url=url, data=payload, auth=WORDPRESS_AUTH)
+    requests.post(url=url, data=payload, headers=WP_AUTH_HEADER)
 
 
 GUILD_DATA_TABLE = '''\n
