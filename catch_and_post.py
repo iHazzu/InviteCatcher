@@ -79,7 +79,7 @@ def create_post(invite: discord.Invite, desc: str, icon: GuildIcon):
         'status': 'publish',
         'featured_media': image["id"]
     }
-    requests.post(url=POSTS_URL, data=payload)
+    requests.post(url=POSTS_URL, data=payload, headers=WP_AUTH_HEADER)
 
 
 def upload_image(icon: GuildIcon) -> dict:
