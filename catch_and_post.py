@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 import discord
 from keys import WP_AUTH_HEADER
 import markdown
@@ -93,7 +92,6 @@ def upload_image(icon: GuildIcon) -> dict:
 
 
 def edit_post(post_data: dict, desc: str):
-    date = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
     desc = post_data['content']['rendered'] + "<hr/>" + desc
     payload = {
         'id': post_data['id'],
