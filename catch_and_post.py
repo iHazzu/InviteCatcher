@@ -98,7 +98,7 @@ def edit_post(post_data: dict, desc: str):
     payload = {
         'id': post_data['id'],
         'content': desc,
-        'date': date
+        'date_gmt': date
     }
     url = POSTS_URL + f"/{post_data['id']}"
     requests.post(url=url, data=payload, headers=WP_AUTH_HEADER)
