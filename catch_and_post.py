@@ -3,6 +3,7 @@ import discord
 from keys import WP_AUTH_HEADER
 import markdown
 import requests
+from channels import expected_channels
 
 
 WORDPRESS_API_URL = "https://alphaleaks.com/wp-json/wp/v2/"
@@ -10,9 +11,6 @@ POST_TYPE = "discord-guilds"
 POSTS_URL = WORDPRESS_API_URL + POST_TYPE
 INVITE_PATTERN = r'discord(?:\.com|app\.com|\.gg)[\/invite\/]?(?:[a-zA-Z0-9\-]{2,32})'
 URL_REGEX = re.compile(r'(https?://[^\s]+)')
-with open("channel_ids.txt", "r") as file:
-    channel_ids = file.read().split("\n")
-    EXPECTED_CHANNELS = [int(c_id) for c_id in channel_ids]
 
 
 class GuildIcon:
@@ -27,7 +25,7 @@ class GuildIcon:
 
 
 async def go(message: discord.Message, client: discord.Client):
-    if message.channel.id in EXPECTED_CHANNELS:
+    if expected_channels.is_expected(message.channel):
         invites = re.findall(INVITE_PATTERN, message.content)
         for invite_url in invites:
             if invite_url.startswith("discord"):

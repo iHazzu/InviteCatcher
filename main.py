@@ -8,6 +8,7 @@ Date: 17/12/2021
 import discord
 import catch_and_post
 from keys import DISCORD_BOT_TOKEN
+from commands import process_message
 
 
 client = discord.Client(
@@ -26,6 +27,7 @@ async def on_ready():
 @client.event
 async def on_message(message: discord.Message):
     await catch_and_post.go(message, client)
+    await process_message(message, client)
 
 
 # connecting to discord
