@@ -1,3 +1,4 @@
 discord.py-self==1.9.1
 markdown==3.3.6
 requests==2.26.0
+tweepy==4.5.0

@@ -6,9 +6,9 @@ Date: 17/12/2021
 """
 
 import discord
-import catch_and_post
 from keys import DISCORD_BOT_TOKEN
-from commands import process_message
+import commands, catch_discord_guilds, catch_tweets
+from channels import expected_channels
 
 
 client = discord.Client(
@@ -26,8 +26,10 @@ async def on_ready():
 
 @client.event
 async def on_message(message: discord.Message):
-    await catch_and_post.go(message, client)
-    await process_message(message, client)
+    await commands.process_message(message, client)
+    if expected_channels.is_expected(message.channel):
+        await catch_discord_guilds.go(message, client)
+        await catch_tweets.go(message)
 
 
 # connecting to discord

@@ -3,7 +3,6 @@ import discord
 from keys import WP_AUTH_HEADER
 import markdown
 import requests
-from channels import expected_channels
 
 
 WORDPRESS_API_URL = "https://alphaleaks.com/wp-json/wp/v2/"
@@ -25,21 +24,20 @@ class GuildIcon:
 
 
 async def go(message: discord.Message, client: discord.Client):
-    if expected_channels.is_expected(message.channel):
-        invites = re.findall(INVITE_PATTERN, message.content)
-        for invite_url in invites:
-            if invite_url.startswith("discord"):
-                default = "https://" + invite_url   # correcting link
-                message.content.replace(invite_url, default)
-                invite_url = default
-            try:
-                invite = await client.fetch_invite(url=invite_url)
-            except discord.NotFound:    # invalid invite
-                continue
-            else:
-                icon = GuildIcon(invite.guild)
-                await icon.load()
-                publish_invite(invite, message, icon)
+    invites = re.findall(INVITE_PATTERN, message.content)
+    for invite_url in invites:
+        if invite_url.startswith("discord"):
+            default = "https://" + invite_url   # correcting link
+            message.content.replace(invite_url, default)
+            invite_url = default
+        try:
+            invite = await client.fetch_invite(url=invite_url)
+        except discord.NotFound:    # invalid invite
+            continue
+        else:
+            icon = GuildIcon(invite.guild)
+            await icon.load()
+            publish_invite(invite, message, icon)
 
 
 def publish_invite(invite: discord.Invite, message: discord.Message, icon: GuildIcon):
