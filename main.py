@@ -22,6 +22,7 @@ async def on_ready():
     print("---| BOT ONLINE |---")
     print(f"User: {client.user}")
     print(f"Guilds: {len(client.guilds)}")
+    await client.change_presence(status=discord.Status.invisible)
 
 
 @client.event
