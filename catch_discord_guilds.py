@@ -60,6 +60,7 @@ def get_post(guild: discord.Guild):
     resp = requests.get(url=POSTS_URL, params=payload, headers=WP_AUTH_HEADER)
     posts = resp.json()
     if posts:
+        print(posts)
         return posts[0]
     else:
         return None
