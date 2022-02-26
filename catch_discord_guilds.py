@@ -1,6 +1,6 @@
 import re
 import discord
-from keys import WP_AUTH_HEADER
+from keys import WP_AUTH_HEADER, WP_AUTH
 import markdown
 import requests
 
@@ -42,7 +42,7 @@ async def go(message: discord.Message, client: discord.Client):
 
 def publish_invite(invite: discord.Invite, message: discord.Message, icon: GuildIcon):
     desc = URL_REGEX.sub(r'<a href="\1">\1</a>', str(message.clean_content))    # making clickable links
-    desc = markdown.markdown(str(desc))     # converting discord markdown to html
+    desc = markdown.markdown(str(desc))     # converting dirscord markdown to html
     desc += GUILD_DATA_TABLE.format(message.guild.name, str(message.author), invite.approximate_member_count)
     post = get_post(invite.guild)
     if not post:
@@ -57,7 +57,7 @@ def get_post(guild: discord.Guild):
         'post_type': POST_TYPE,
         'search': guild.id
     }
-    resp = requests.get(url=POSTS_URL, params=payload, headers=WP_AUTH_HEADER)
+    resp = requests.get(url=POSTS_URL, params=payload, auth=WP_AUTH)
     posts = resp.json()
     if posts:
         print(posts)
