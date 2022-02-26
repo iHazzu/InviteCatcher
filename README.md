@@ -15,8 +15,8 @@ First make sure you are using python 3.8 or higher. Then install the [requiremen
 You will need to set the environment variables:
 ```bash
 export DISCORD_BOT_TOKEN=""
-export WORDPRESS_USER=""
-export WORDPRESS_PASSWORD=""
+export WORDPRESS_TOKEN=""
+export TWITTER_BEARER_TOKEN=""
 ```
 Finally, run the [main](main.py) file:
 ```bash
