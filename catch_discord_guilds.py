@@ -6,7 +6,7 @@ import requests
 
 
 WORDPRESS_API_URL = "https://alphaleaks.com/wp-json/wp/v2/"
-POST_TYPE = "discord-guild"
+POST_TYPE = "discord-guilds"
 POSTS_URL = WORDPRESS_API_URL + POST_TYPE
 INVITE_PATTERN = r'discord(?:\.com|app\.com|\.gg)[\/invite\/]?(?:[a-zA-Z0-9\-]{2,32})'
 URL_REGEX = re.compile(r'(https?://[^\s]+)')
