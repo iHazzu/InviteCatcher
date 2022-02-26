@@ -6,7 +6,7 @@ import requests
 
 
 WORDPRESS_API_URL = "https://alphaleaks.com/wp-json/wp/v2/"
-POST_TYPE = "discord-guilds"
+POST_TYPE = "discord-guild"
 POSTS_URL = WORDPRESS_API_URL + POST_TYPE
 INVITE_PATTERN = r'discord(?:\.com|app\.com|\.gg)[\/invite\/]?(?:[a-zA-Z0-9\-]{2,32})'
 URL_REGEX = re.compile(r'(https?://[^\s]+)')
@@ -54,7 +54,7 @@ def publish_invite(invite: discord.Invite, message: discord.Message, icon: Guild
 
 def get_post(guild: discord.Guild):
     payload = {
-        'post_type': 'discord-guilds',
+        'post_type': POST_TYPE,
         'search': guild.id
     }
     resp = requests.get(url=POSTS_URL, params=payload, headers=WP_AUTH_HEADER)
