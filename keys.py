@@ -2,5 +2,7 @@ from os import environ as env
 
 
 DISCORD_BOT_TOKEN = env["DISCORD_BOT_TOKEN"]
-WP_AUTH_HEADER = {'Authorization': 'Bearer ' + env["WORDPRESS_TOKEN"]}
+WORDPRESS_DOMAIN = "https://alphaleaks.com/"
+WORDPRESS_USER = env["WORDPRESS_USER"]
+WORDPRESS_PASSWORD = env["WORDPRESS_PASSWORD"]
 TWITTER_BEARER_TOKEN = env["TWITTER_BEARER_TOKEN"]

@@ -6,13 +6,19 @@ Date: 17/12/2021
 """
 
 import discord
-from keys import DISCORD_BOT_TOKEN
-import commands, catch_discord_guilds, catch_tweets
+import keys
+import commands, catch_invites, catch_tweets
+from wp_api import WpApi
 from channels import expected_channels
 
 
 client = discord.Client(
     guild_subscription_options=discord.GuildSubscriptionOptions(max_online=1, auto_subscribe=False)
+)
+wp = WpApi(
+    domain=keys.WORDPRESS_DOMAIN,
+    user=keys.WORDPRESS_USER,
+    password=keys.WORDPRESS_PASSWORD
 )
 
 
@@ -29,9 +35,9 @@ async def on_ready():
 async def on_message(message: discord.Message):
     await commands.process_message(message, client)
     if expected_channels.is_expected(message.channel):
-        await catch_discord_guilds.go(message, client)
-        await catch_tweets.go(message)
+        await catch_invites.go(message, client, wp)
+        await catch_tweets.go(message, wp)
 
 
 # connecting to discord
-client.run(DISCORD_BOT_TOKEN)
+client.run(keys.DISCORD_BOT_TOKEN)

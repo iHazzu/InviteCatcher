@@ -12,10 +12,11 @@ If there is already a post for invitations from that server, the bot will simply
 
 ### How to run the bot
 First make sure you are using python 3.8 or higher. Then install the [requirements](requirements.txt) with `pip`.
-You will need to set the environment variables:
+You will need to set the environment variables (create an application password on WP for this):
 ```bash
 export DISCORD_BOT_TOKEN=""
-export WORDPRESS_TOKEN=""
+export WORDPRESS_USER=""
+export WORDPRESS_PASSWORD=""
 export TWITTER_BEARER_TOKEN=""
 ```
 Finally, run the [main](main.py) file:
