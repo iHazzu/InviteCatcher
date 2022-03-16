@@ -7,7 +7,7 @@ import tweepy
 from collections import namedtuple
 
 
-POST_TYPE = "tweets"
+POST_TYPE = "tweet"
 URL_REGEX = re.compile(r'(https?://[^\s]+)')
 TWEET_PATTERN = re.compile(r'twitter\.com/[\w.-]+/status/[0-9]+')
 client = tweepy.Client(TWITTER_BEARER_TOKEN)
