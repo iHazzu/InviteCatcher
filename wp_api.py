@@ -8,45 +8,43 @@ class WpApi:
         self.user = user
         self.password = password
         self.api_url = domain + "wp-json/wp/v2/"
-        self.jwt_token = None
-        self.generate_jwt_token()
+        self.jwt_token = self.generate_jwt_token()
 
-    def generate_jwt_token(self):
+    def generate_jwt_token(self) -> str:
         params = {
             'username': self.user,
             'password': self.password
         }
         url = self.domain + "wp-json/jwt-auth/v1/token"
         req = requests.post(url=url, params=params)
-        self.jwt_token = req.json()['token']
+        return req.json()['token']
 
-    def get_auth_headers(self, headers: dict):
+    def authenticate(self, headers: dict) -> dict:
         if not headers:
-            auth_headers = {'Authorization': f"Bearer {self.jwt_token}"}
+            auth = {'Authorization': f"Bearer {self.jwt_token}"}
         else:
-            auth_headers = headers.copy()
-            auth_headers['Authorization'] = f"Bearer {self.jwt_token}"
-        return auth_headers
+            auth = headers.copy()
+            auth['Authorization'] = f"Bearer {self.jwt_token}"
+        return auth
 
     def api_req(self, method: str, endpoint: str, params: dict = None, data=None, headers: dict = None):
-        req = requests.request(
+        resp = requests.request(
             method=method,
             url=self.api_url + endpoint,
             params=params,
             data=data,
-            headers=self.get_auth_headers(headers)
+            headers=self.authenticate(headers)
         )
-        if req.status_code == 403:  # jwt token expired
-            self.generate_jwt_token()
-            req = requests.request(
+        if resp.status_code == 403:  # jwt token expired
+            self.jwt_token = self.generate_jwt_token()
+            resp = requests.request(
                 method=method,
                 url=self.api_url + endpoint,
                 params=params,
                 data=data,
-                headers=self.get_auth_headers(headers)
+                headers=self.authenticate(headers)
             )
-        resp = req.json()
-        return resp
+        return resp.json()
 
     def get_post(self, post_type: str, search: str) -> Optional[dict]:
         payload = {
