@@ -3,11 +3,15 @@ from catch.catch_tweets import client
 import tweepy
 import csv
 from io import StringIO
+import re
 
 
 async def get_retweets(message: discord.Message, args: tuple):
-    link_parts = args[0].split("/")
-    tweet_id = link_parts[-1]
+    match = re.search(r'/status/[0-9]+', args[0])
+    if match:
+        tweet_id = match.group().split("/")[-1]
+    else:
+        return await message.reply("Invalid tweet link.")
     out = StringIO()
     writer = csv.writer(out)
     writer.writerow(["username", "followers", "position"])
