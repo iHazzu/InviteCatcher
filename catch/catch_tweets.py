@@ -2,7 +2,7 @@ import discord
 from keys import TWITTER_BEARER_TOKEN
 import re
 import requests
-from wp_api import WpApi
+from wordpress.wp_api import WpApi
 import tweepy
 from collections import namedtuple
 

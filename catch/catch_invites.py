@@ -1,7 +1,7 @@
 import re
 import discord
 import markdown
-from wp_api import WpApi
+from wordpress.wp_api import WpApi
 
 
 POST_TYPE = "discord-guilds"

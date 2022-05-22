@@ -7,9 +7,10 @@ Date: 17/12/2021
 
 import discord
 import keys
-import commands, catch_invites, catch_tweets
-from wp_api import WpApi
-from channels import expected_channels
+from commands import process_message
+from catch import catch_invites, catch_tweets
+from wordpress.wp_api import WpApi
+from catch.channels import expected_channels
 
 
 client = discord.Client(
@@ -33,7 +34,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message: discord.Message):
-    await commands.process_message(message, client)
+    await process_message(message, client)
     if expected_channels.is_expected(message.channel):
         await catch_invites.go(message, client, wp)
         await catch_tweets.go(message, wp)

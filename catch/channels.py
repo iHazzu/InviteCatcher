@@ -7,12 +7,12 @@ class Channels:
         self.load_expected_channels()
 
     def load_expected_channels(self):
-        with open("channel_ids.txt", "r") as file:
+        with open("catch/channel_ids.txt", "r") as file:
             channel_ids = file.read().split("\n")
             self.expected = [int(c_id) for c_id in channel_ids]
 
     def save_expected_channel(self):
-        with open("channel_ids.txt", "w") as file:
+        with open("catch/channel_ids.txt", "w") as file:
             file.write("\n".join([str(c_id) for c_id in self.expected]))
 
     def is_expected(self, channel: discord.TextChannel):

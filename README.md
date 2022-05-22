@@ -6,7 +6,7 @@ In the [main](main.py) file we started the client to connect with the discord AP
 - `on_ready`: will fire whenever the bot starts its connection with Discord API.
 - `on_message`: will be triggered whenever a new message is sent on channels that the bot has access to.
 
-For every new incoming message that comes from a channel specified in [channel_ids](channel_ids.txt) the bot will look for invites from discord servers through the module [catdh_discord_guilds](catch_discord_guilds.py). When found, the bot will create a new post on the WordPress site to publicize the invitation, which contains a description (message content), invitation server icon and a table containing publication data.
+For every new incoming message that comes from a channel specified in [channel_ids](catch/channel_ids.txt) the bot will look for invites from discord servers through the module [catdh_discord_guilds](catch_discord_guilds.py). When found, the bot will create a new post on the WordPress site to publicize the invitation, which contains a description (message content), invitation server icon and a table containing publication data.
 
 If there is already a post for invitations from that server, the bot will simply add this new one to the end of the post. The bot will be able to find posts for a certain server by looking for its `id`, since when creating a post the bot intentionally adds a html comment containing the `guild_id`. If the found invitation has already been posted, it will be ignored.
 
