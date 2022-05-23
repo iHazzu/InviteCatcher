@@ -4,6 +4,7 @@ import tweepy
 import csv
 from io import StringIO
 import re
+PROFILE_BASE = "https://twitter.com/{}"
 
 
 async def get_retweets(message: discord.Message, args: tuple):
@@ -14,8 +15,8 @@ async def get_retweets(message: discord.Message, args: tuple):
         return await message.reply("Invalid tweet link.")
     out = StringIO()
     writer = csv.writer(out)
-    writer.writerow(["username", "followers", "position"])
-    i = 0
+    writer.writerow(["position", "user_profile_url", "followers", "type"])
+    r, q = 0, 0
     for resp in tweepy.Paginator(
             method=client.get_retweeters,
             id=tweet_id,
@@ -24,11 +25,20 @@ async def get_retweets(message: discord.Message, args: tuple):
     ):
         retweet_by = resp.data if resp.data else []
         for acc in retweet_by:
-            i += 1
-            writer.writerow([acc.username, acc.public_metrics['followers_count'], i])
+            r += 1
+            writer.writerow([r, PROFILE_BASE.format(acc.username), acc.public_metrics['followers_count'], "retweet"])
+    for resp in tweepy.Paginator(
+            method=client.get_quote_tweets,
+            id=tweet_id,
+            expansions=["author_id"],
+            tweet_fields=["author_id"],
+            user_fields=["public_metrics"]
+    ):
+        quotes = resp.data if resp.data else []
+        for tweet in quotes:
+            q += 1
+            acc = next((a for a in resp.includes["users"] if a.id == tweet.author_id))
+            writer.writerow([q, PROFILE_BASE.format(acc.username), acc.public_metrics['followers_count'], "quote"])
     out.seek(0)
     file = discord.File(fp=out, filename="retweets.csv")
-    await message.reply(f"**{i}** users retweeted:", file=file)
-
-
-
+    await message.reply(f"{r} retweets and {q} quotes:", file=file)
